@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documenwwt</title>
+    <script src="https://unpkg.com/vue@next" preload></script>
+</head>
+
+<body>
+    <div id="app">sss</div>
+    <script>
+        let da = {
+            template: `<div>{{title}}{{re}}</div>`,
+            props: {
+                title: {
+                    type: String,
+                    default: "wuwei"
+                }
+
+            },
+            setup(props) {
+                console.log(Vue);
+                console.log(Vue);
+                let re = props.title
+                // const { title } = Vue.toRefs(props)
+                // console.log(title.value)
+                return {
+                    re
+                }
+            },
+
+        };
+        let app = Vue.createApp(da);
+        app.mount("#app");
+
+    </script>
+</body>
+
+</html>

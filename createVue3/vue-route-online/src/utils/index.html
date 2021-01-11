@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        fetch("../utils/data.json")
+            .then((da) => {
+                // da.json().then(da=>{
+                //   console.log(da);
+                // });
+                return da.json();
+            })
+            .then((da) => {
+                console.log(da);
+                // trigger();
+                value = da;
+            })
+            .catch((re) => {
+                console.log(re);
+            });
+
+
+        fetch("../utils/data.json").then(da => {
+            return da.json()
+        }).then(da => {
+            console.log(da);
+
+        }).catch((daa) => {
+            console.log(daa);
+        })
+    </script>
+</body>
+
+</html>

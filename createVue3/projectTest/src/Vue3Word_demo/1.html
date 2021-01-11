@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script type="module">
+  </script>
+  <div id="app">{{name}}{{data}} props---{{sd}} setUp--props{{propSetup}}
+    <button @click="btn">btn</button>
+    <div>
+      computed-----{{namss}}
+      setupcomputed--{{computedValue}}
+      setupcomputed--{{computedValues}}
+      setupdata----{{arr}}
+    </div>
+  </div>
+
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/3.0.2/vue.global.js"></script>
+  <script type="module">
+    import {test} from "./script/demo.js"
+    // test();
+    let {
+      ref,
+      reactive,
+      onMounted,
+      watch,
+      toRefs,
+      computed
+    } = Vue;
+    let app = Vue.createApp({
+      //   template:"",
+      props: {
+        sd: {
+          type: String,
+          default: "propValue"
+        }
+      },
+      data() {
+        return {
+          name: "wuwei"
+        }
+      },
+      methods: {
+
+      },
+      created() {
+        // console.log(this);
+      },
+      computed:{
+        namss:{
+          get(){
+            console.log(this);
+            return this.name;
+          },
+          set(){
+            this.d=3434;
+          }
+        }
+      },
+      setup(props) {
+        console.log(props.sd);
+        let {sd} = toRefs(props);
+        console.log(sd);
+        const data = ref([]);
+        const getData = async () => {
+          data.value = await new Promise(res => {
+            fetch("http://jsonplaceholder.typicode.com/posts").then(da => {
+              da.json().then(da => {
+                // res(da);
+              })
+            })
+          })
+        }
+        let state = ref(34);
+        function btn() {
+          data.value[0] = 300;
+          console.log(sd.value);
+        };
+
+        function sf() {
+          console.log("sf");
+        }
+        // lifecycle
+        onMounted(getData)
+        // 回调会合并看是否一致
+        onMounted(sf)
+        // 监听响应数据变化
+        watch(data, (newVal) => {
+          console.log(newVal);
+
+        })
+
+        watch(sd, (newVal) => {
+          console.log("props-watch");
+          console.log(newVal);
+        })
+        let computedValue=computed(()=>{
+          return state.value+20
+        })
+        let computedValues=computed(()=>{
+          return state.value+20
+        })
+
+
+        let arr=test();
+        console.log(arr);
+        return {
+          data,
+          btn,
+          computedValue,
+          computedValues,
+          arr
+          
+        };
+      }
+
+
+    })
+    app.mount("#app")
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="contains">
+        <button onclick="df()">
+            查看LRU缓存数据
+        </button>
+    </div>
+    <script>
+        class LRU {
+            constructor() {
+                this.cache = [];
+            };
+            put(newIndex, newVal) {
+                let obj = {};
+                obj[newIndex] = newVal;
+                if (this.cache.length <= 1) {
+                    this.cache.push(obj);
+                    console.log("数组小于2 添加记录");
+                } else {
+                    this.cache.shift();
+                    this.cache.push(obj)
+                    console.log(obj);
+                    console.log("数组大于2 添加记录");
+                }
+            };
+            gets(valindex) {
+                // debugger;
+                if(!valindex)return console.warn("请传入参数！")
+                try {
+                    this.cache.forEach((vals, index) => {
+                        for (let i in vals) {
+                            if (i == valindex) {
+                                //保存值
+                                let y = vals[valindex];
+                                let obj = vals;
+                                this.cache.splice(index, 1);
+                                this.cache.push(obj);
+                                this.value=y;
+                                throw new Error("你查找的值是:" + y);
+                            } else {
+                                if (this.cache.length - 1 === index) {
+                                    console.log("没有在LRU缓存中找到具体指");
+                                }
+                            }
+                        }
+                    })
+                } catch (err) {
+                    console.log(this.value);
+                    return ;
+                }
+            };
+            delete() {
+
+            }
+        }
+        var lru = new LRU();
+        lru.put(1, 1);
+        lru.put(2, 2);
+        console.log(lru);
+        // setTimeout(() => {
+        //     lru.put(3, 3);
+        //     console.log(lru);
+        // }, 0)
+        lru.put(4, 4);
+        lru.gets(4);
+
+        function df() {
+            let ul = document.createElement("ul");
+            ul.id = "ul"
+            console.log(3333);
+            ul.innerHTML = `<li>${JSON.stringify(lru.cache[0])}</li><li>${JSON.stringify(lru.cache[1])}</li>`
+            contains.appendChild(ul);
+        }
+    </script>
+</body>
+
+</html>
