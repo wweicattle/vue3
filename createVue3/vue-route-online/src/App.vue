@@ -1,20 +1,8 @@
 <template>
   <div id="nav">
-    <ul>
-      <!-- <li><a>menu1</a></li>
-      <li><a>menu2</a></li>
-      <li><a>menu3</a></li> -->
-      <!-- <template > -->
-        <router-link to="/about">abount</router-link>
-
-      <!-- <li v-for="(val, index) in routes" :key="index">
-        {{ val.path }}
-        <router-link :to="val.path">{{ val.name }}</router-link>
-      </li> -->
-      <!-- </template> -->
+      <router-link to="/about">abount</router-link>
       <div>------------------------------</div>
       <router-view />
-    </ul>
   </div>
 </template>
 <script>

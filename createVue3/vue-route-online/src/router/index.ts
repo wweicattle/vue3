@@ -9,22 +9,9 @@ const menu3 = () =>
   import(/* webpackChunkName: "about" */ "../views/menu3.vue");
 const menu4 = () =>
   import(/* webpackChunkName: "about" */ "../views/menu4.vue");
-
-// fetch("../utils/data.json")
-//   .then((da) => {
-//     // da.json().then(da=>{
-//     //   console.log(da);
-//     // });
-//     return da.json();
-//   })
-//   .then((da) => {
-//     console.log(da);
-//     // trigger();
-//   })
-//   .catch((re) => {
-//     console.log(re);
-//   });
+  
 const routes: Array<RouteRecordRaw> = [
+  
   {
     path: "/",
     name: "Home",
