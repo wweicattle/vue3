@@ -12,6 +12,10 @@
      sasasa
   </div>
   <script>
+    function sum(s,b){
+      return s+b
+    }
+   console.log( sum(99,1));
     let objs=[1,2,3,4,5,6]
     var obj = new Proxy(objs, {
       get: function (target, propKey, receiver) {

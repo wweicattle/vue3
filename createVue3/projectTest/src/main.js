@@ -45,10 +45,6 @@ app.component('modal-button', {
     }
 });
 app.component('blog-post', {
-  template: "<div>lorem{{state}}</div>",
-  mounted() {
-    console.log("43434343434");
-  },
   data() {
     return {
       sd: 33
@@ -56,12 +52,7 @@ app.component('blog-post', {
   },
   render() {
     console.log(this.$slots);
-
     console.log(this.$slots.header());
-    console.log(this.$slots.default());
-
-    console.log(this.$slots.footer());
-
     return h('div', [
       h('header', this.$slots.header()),
       h('main', this.$slots.default()),

@@ -5,14 +5,19 @@
   </div>
 </template>
 
-<script lang="ts">
+<script >
 import { defineComponent } from 'vue';
 import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
-
+import t from "wwcattleitem"
 export default defineComponent({
   name: 'Home',
   components: {
     HelloWorld,
+  },
+  created() {
+    console.log(t.add());
+    console.log(t.reduce());
+
   },
 });
 </script>

@@ -1,5 +1,25 @@
 <template>
   <div>
+    <input type="text" v-model="inputVal" class="text" />
+    <button @click="cahngestateBtn">显示需要的插槽组件</button>
+    <switch-test :case="showValSwitch">
+      <template #wuweis>
+        <header>对第一个插槽的扩展wuweiwuweissssssssss</header>
+      </template>
+      <template #wuwei>
+        <header>对第一个插槽的扩展wuweiwuwei</header>
+      </template>
+      <!-- <template #test>
+        <header>对二个插槽的扩展testtest</header>
+      </template> -->
+      <template #default>
+        <header>对默认的插槽进行的扩展</header>
+      </template>
+    </switch-test>
+    <!-- <component :is="SwitchTest" >
+
+    </component> -->
+
     <div id="test">
       <test-repeat :pro="324"></test-repeat>
       <button type="">clickone</button>
@@ -51,7 +71,7 @@
       </li>
       </
       ul>
-      <!-- </template> -->
+      </template> -->
     <button @click="btn">delete</button>
     <img alt="Vue logo" src="./assets/logo.png" />
     <HelloWorld msg="Hello Vue 3.0 + Vite" />
@@ -86,7 +106,6 @@ console.log("0000000000000000000000000000");
 console.log(test());
 import GlobalApi from "./wordTest/GlobalApi.vue";
 import logic from "./wordTest/Logic.vue";
-
 // import LogixTest from "./wordTest/LogicRe.vue"
 import { computed } from "vue";
 import useMousePosition from "./utils/userMousePosition.js";
@@ -96,10 +115,14 @@ import "./utils/renderer";
 // }
 
 import testRepeat from "./components/testRepeat.vue";
+import SwitchTest from "./wordTest/SwitchTest.vue";
 export default {
   name: "App",
   data() {
     return {
+      inputVal: "",
+      showValSwitch: "wuweis",
+      SwitchTest: "HelloWorld",
       showyi: false,
       yi: null,
       stus: [],
@@ -122,6 +145,10 @@ export default {
     };
   },
   methods: {
+    cahngestateBtn() {
+      console.log(this.inputVal);
+      this.showValSwitch = this.inputVal;
+    },
     testclick() {
       var subwin = window.open("http://127.0.0.1:5501/tes.html");
       //父窗口http://localhost:8080/a.html向子窗口http://localhost:8081/b.html发消息，调用postMessage方法。
@@ -131,7 +158,7 @@ export default {
       // });
 
       function receiveMessage(event) {
-        document.write("消息：",event.data);
+        document.write("消息：", event.data);
         // 我们能相信信息的发送者吗?  (也许这个发送者和我们最初打开的不是同一个页面).
         if (event.origin !== "http://192.168.36.115:5501") return;
 
@@ -188,6 +215,7 @@ export default {
     // LogixTest,
     logic,
     testRepeat,
+    SwitchTest,
   },
 };
 </script>
