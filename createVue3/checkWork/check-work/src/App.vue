@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<style>
+<style >
 @import url(./assets/css/base.css);
 body,html{
  height: 100%;
@@ -13,6 +13,8 @@ body,html{
 }
 #app {
   height: 100%;
+ width:100%
+
 }
 
 </style>
