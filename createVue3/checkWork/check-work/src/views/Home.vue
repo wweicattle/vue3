@@ -199,8 +199,15 @@ export default {
     },
     // 获取缩放比例，按设计稿（1080:1920）等比缩放
     getScale() {
+      console.log(22);
       let containWidth = document.body.clientWidth;
-      this.scale = Number(containWidth / 1536);
+      let containHeight = document.body.clientHeight;
+      console.log(containWidth);
+      console.log(containHeight);
+
+    
+     this.scale=(containHeight/896)<(containWidth/1536)?(containHeight/896):(containWidth/1536);
+     console.log(this.scale);
     },
   },
   beforeDestroy() {
