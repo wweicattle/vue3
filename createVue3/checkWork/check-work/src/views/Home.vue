@@ -53,7 +53,7 @@
                   </div>
                   <div class="status">
                     <span class="later">{{
-                      val.lostDays > 0 ? "旷工 " : "迟到 "
+                      val.lostDays > 0 ? "旷工" : "迟到 "
                     }}</span>
                     <span class="time-minutes">{{
                       val.lostDays > 0
@@ -65,7 +65,8 @@
               </template>
             </ul>
             <div class="now-page">
-              昨日考勤{{ " "+timeNum + " " }}/{{ " " + maxTimeNum }}
+              <span>{{ isYesDay }}</span
+              >{{ " " + timeNum + " " }}/{{ " " + maxTimeNum }}
             </div>
           </div>
           <div class="right-border">
@@ -75,9 +76,9 @@
       </section>
       <footer>
         <div class="footer-content">
-          <img src="../assets/img/bottom_bg.png" alt="" />
+          <img src="../assets/img/bottom_bgs.png" alt="" />
           <div class="status_total">
-            <ul>
+            <ul class="status_title_detail">
               <li>
                 <div class="name">异常考勤</div>
                 <div class="detail-num">
@@ -86,7 +87,7 @@
                 </div>
               </li>
               <li class="later">
-                <div class="name">迟到</div>
+                <div class="name">迟到人数</div>
                 <div class="detail-num">
                   <span class="num">{{
                     homeData ? homeData.length - lostDayNum : 0
@@ -95,13 +96,21 @@
                 </div>
               </li>
               <li>
-                <div class="name">旷工</div>
+                <div class="name">旷工人数</div>
                 <div class="detail-num">
                   <span class="num">{{ lostDayNum ? lostDayNum : 0 }}</span
                   ><span class="weight">人</span>
                 </div>
               </li>
             </ul>
+            <div class="score-num">
+              <ul class="score-name">
+                <li class="num-two">信息管理中心</li>
+                <li class="num-one">信息管理中心</li>
+                <li class="num-three">信息管理中心</li>
+              </ul>
+              <!-- <img src="../assets/img/score.png" alt="" /> -->
+            </div>
           </div>
         </div>
       </footer>
@@ -130,6 +139,7 @@ export default {
       nowpage: null,
       totalpage: null,
       maxTimeNum: null,
+      isYesDay: "",
     };
   },
   components: {},
@@ -139,7 +149,7 @@ export default {
     window.onresize = this.getScale;
     var time = new Date();
     this.year = time.toLocaleDateString();
-    var arrWeek = ["日","一", "二", "三", "四", "五", "六"];
+    var arrWeek = ["日", "一", "二", "三", "四", "五", "六"];
     this.week = arrWeek[time.getDay()];
     this.time = time.toLocaleTimeString();
     this.hours = time.getHours();
@@ -168,7 +178,8 @@ export default {
       console.log(this.minutes);
       console.log(this.hours);
 
-      if (Number(this.hours) <= 8||(this.hours==8&&this.minutes<=15)) {
+      if (Number(this.hours) <= 8 || (this.hours == 8 && this.minutes <= 15)) {
+        this.isYesDay = "昨日考勤：";
         // 请求昨天数据
         var day1 = new Date();
         day1.setTime(day1.getTime() - 24 * 60 * 60 * 1000);
@@ -232,6 +243,7 @@ export default {
             console.log(da);
           });
       } else {
+        this.isYesDay = "今日考勤：";
         obj = {
           loadDate: this.year,
         };
@@ -418,7 +430,7 @@ export default {
             box-sizing: border-box;
             list-style: none;
             width: 326px;
-            height: 106px;
+            height: 102px;
             background: url("../assets/img/card_bg.png");
             // background-size: cover;
             display: flex;
@@ -436,6 +448,7 @@ export default {
                 width: 54px;
                 height: 54px;
                 overflow: hidden;
+                
                 left: 0;
                 right: 0;
                 bottom: 0;
@@ -454,8 +467,8 @@ export default {
               // }
             }
             .per-name {
-                transition: all 2s;
-                -webkit-transition: all 2s; /* Safari */
+              transition: all 2s;
+              -webkit-transition: all 2s; /* Safari */
               padding: 0 10px 0 6px;
               text-align: center;
               height: 50px;
@@ -485,7 +498,7 @@ export default {
               width: 104px;
               text-align: center;
               height: 56px;
-              border: 1px dotted #b09a9a;
+              border: 1px solid #5a5a5a;
               line-height: 56px;
               .later {
                 padding: 4px 0;
@@ -530,21 +543,20 @@ export default {
       // background: #f40;
 
       img {
-        width: 918px;
+        width: 1160px;
         position: absolute;
         left: 0;
         right: 0;
+        bottom: 0;
         margin: auto;
-        margin: 0 auto;
       }
       .status_total {
-        ul {
-          width: 860px;
+        .status_title_detail {
+          width: 560px;
           height: 120px;
           position: absolute;
-          left: 0;
-          right: 0;
-          top: 0;
+          left: 280px;
+          top: 10px;
           bottom: 0;
           margin: auto;
           display: flex;
@@ -552,7 +564,8 @@ export default {
           align-items: flex-end;
           li {
             list-style: none;
-            text-align: center;padding-bottom:6px;
+            text-align: center;
+            padding-bottom: 6px;
             &.later {
               padding-left: 40px;
             }
@@ -574,6 +587,54 @@ export default {
               .weight {
                 // padding-right: -25px;
                 font-size: 20px;
+              }
+            }
+          }
+        }
+        .score-num {
+          color: #fff;
+          width: 380px;
+          height: 178px;
+          position: absolute;
+          right: 270px;
+          bottom: 0;
+      
+          background: url("../assets/img/score.png");
+          background-size: cover;
+          // img{
+          //   width:100%
+          // };
+          .score-name {
+            height: 100%;
+            align-items: flex-end;
+            display: flex;
+            li {
+              width: 33.333%;
+              box-sizing: border-box;
+              text-align: center;
+              list-style: none;
+              padding-bottom: 50px;
+              font-size: 22px;
+              font-weight: 600;
+                overflow: hidden;
+                // height: 86px;
+                text-overflow: ellipsis;
+                  white-space: nowrap;
+                 line-clamp: 2;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+              &.num-one {
+                margin-bottom: 20px;
+                color: #ecdf94;
+              }
+              &.num-two {
+                margin-bottom: 4px;
+              }
+              &.num-three {
+                margin-bottom: -9px;
+                color: #dfc4aa;
+
               }
             }
           }
