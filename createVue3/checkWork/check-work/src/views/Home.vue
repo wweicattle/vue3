@@ -39,23 +39,34 @@
           </div>
           <div class="per-content">
             <ul>
-              <li v-for="i in 16" :key="i">
-                <div class="avator">
-                  <img src="../assets/img/avatar_border.png" alt="" />
-                  <div class="real-actar">
-                    <img src="../assets/img/ee.jpg" alt="" />
+              <template v-for="val in selectHomeItem">
+                <li :key="JSON.stringify(val)">
+                  <div class="avator">
+                    <img src="../assets/img/avatar_border.png" alt="" />
+                    <div class="real-actar" v-lazy:background-image="val.photo">
+                      <!-- <img :src="val.photo" alt="" /> -->
+                    </div>
                   </div>
-                </div>
-                <div class="per-name">
-                  <div class="name">林某某</div>
-                  <div class="bumen">信息管理中心</div>
-                </div>
-                <div class="status">
-                  <span class="later">迟到</span>
-                  <span class="time-minutes">13 min</span>
-                </div>
-              </li>
+                  <div class="per-name">
+                    <div class="name">{{ val.cname }}</div>
+                    <div class="bumen">{{ val.deptName }}</div>
+                  </div>
+                  <div class="status">
+                    <span class="later">{{
+                      val.lostDays > 0 ? "旷工 " : "迟到 "
+                    }}</span>
+                    <span class="time-minutes">{{
+                      val.lostDays > 0
+                        ? val.lostDays + "天"
+                        : val.delayMinutes + "分"
+                    }}</span>
+                  </div>
+                </li>
+              </template>
             </ul>
+            <div class="now-page">
+              昨日考勤{{ " "+timeNum + " " }}/{{ " " + maxTimeNum }}
+            </div>
           </div>
           <div class="right-border">
             <img src="../assets/img/left_border.png" alt="" />
@@ -114,15 +125,21 @@ export default {
       hours: null,
       minutes: null,
       lostDayNum: null,
+      timeNum: 1,
+      selectHomeItem: [],
+      nowpage: null,
+      totalpage: null,
+      maxTimeNum: null,
     };
   },
   components: {},
   created() {
+    // 页面进行自适应缩小
     this.getScale();
     window.onresize = this.getScale;
     var time = new Date();
     this.year = time.toLocaleDateString();
-    var arrWeek = ["一", "二", "三", "四", "五", "六", "日"];
+    var arrWeek = ["日","一", "二", "三", "四", "五", "六"];
     this.week = arrWeek[time.getDay()];
     this.time = time.toLocaleTimeString();
     this.hours = time.getHours();
@@ -133,7 +150,7 @@ export default {
       var time = new Date();
       this.year = time.toLocaleDateString();
       var arrWeek = ["一", "二", "三", "四", "五", "六", "日"];
-      this.week = arrWeek[time.getDay()];
+      this.week = arrWeek[Number(time.getDay()) - 1];
       this.time = time.toLocaleTimeString();
       this.hours = time.getHours();
       this.minutes = time.getMinutes();
@@ -150,7 +167,9 @@ export default {
       // 判断请求昨天数据还是今天的
       console.log(this.minutes);
       console.log(this.hours);
-      if (Number(this.minutes) <= 15 && Number(this.hours) <= 8) {
+
+      if (Number(this.hours) <= 8||(this.hours==8&&this.minutes<=15)) {
+        // 请求昨天数据
         var day1 = new Date();
         day1.setTime(day1.getTime() - 24 * 60 * 60 * 1000);
         var yesterdayDate =
@@ -166,8 +185,46 @@ export default {
         getHomeInfo(obj)
           .then((da) => {
             if (da.data.errcode == 0) {
+              let newDataStr = JSON.stringify(da.data.data);
+              // 区分数据是否有变更
+              if (JSON.stringify(this.homeData) == newDataStr) {
+                console.log("------一样的返回数据");
+                return;
+              } else {
+                this.timeNum = 1;
+              }
               this.homeData = da.data.data;
-              console.log(da.data.data);
+              this.selectHomeItem = this.homeData.reduce((val, cue, index) => {
+                if (0 <= index && 15 >= index) {
+                  val.push(cue);
+                }
+                return val;
+              }, []);
+              if (this.setTime) {
+                clearInterval(this.setTime);
+              }
+              this.maxTimeNum = Math.ceil(this.homeData.length / 16);
+              this.setTime = setInterval(() => {
+                this.timeNum =
+                  this.timeNum == this.maxTimeNum ? 1 : ++this.timeNum;
+                this.initMinarr = (this.timeNum - 1) * 16;
+                this.initMaxarr = this.timeNum * 16 - 1;
+                this.selectHomeItem = this.homeData.reduce(
+                  (val, cue, index) => {
+                    if (this.initMinarr <= index && this.initMaxarr >= index) {
+                      val.push(cue);
+                    }
+                    return val;
+                  },
+                  []
+                );
+              }, 15000);
+
+              // 旷工人数
+              var arrLater = this.homeData.filter((val) => {
+                return Number(val.lostDays) > 0;
+              });
+              this.lostDayNum = arrLater.length;
             } else {
             }
           })
@@ -182,12 +239,45 @@ export default {
         getHomeInfo(obj)
           .then((da) => {
             if (da.data.errcode == 0) {
+              let newDataStr = JSON.stringify(da.data.data);
+              // 区分数据是否有变更
+              if (JSON.stringify(this.homeData) == newDataStr) {
+                console.log("------一样的返回数据");
+                return;
+              } else {
+                this.timeNum = 1;
+              }
               this.homeData = da.data.data;
+              this.selectHomeItem = this.homeData.reduce((val, cue, index) => {
+                if (0 <= index && 15 >= index) {
+                  val.push(cue);
+                }
+                return val;
+              }, []);
+              if (this.setTime) {
+                clearInterval(this.setTime);
+              }
+              this.maxTimeNum = Math.ceil(this.homeData.length / 16);
+              this.setTime = setInterval(() => {
+                this.timeNum =
+                  this.timeNum == this.maxTimeNum ? 1 : ++this.timeNum;
+                this.initMinarr = (this.timeNum - 1) * 16;
+                this.initMaxarr = this.timeNum * 16 - 1;
+                this.selectHomeItem = this.homeData.reduce(
+                  (val, cue, index) => {
+                    if (this.initMinarr <= index && this.initMaxarr >= index) {
+                      val.push(cue);
+                    }
+                    return val;
+                  },
+                  []
+                );
+              }, 15000);
+
               // 旷工人数
               var arrLater = this.homeData.filter((val) => {
                 return Number(val.lostDays) > 0;
               });
-              console.log(arrLater);
               this.lostDayNum = arrLater.length;
             } else {
             }
@@ -199,20 +289,18 @@ export default {
     },
     // 获取缩放比例，按设计稿（1080:1920）等比缩放
     getScale() {
-      console.log(22);
       let containWidth = document.body.clientWidth;
       let containHeight = document.body.clientHeight;
-      console.log(containWidth);
-      console.log(containHeight);
-
-    
-     this.scale=(containHeight/896)<(containWidth/1536)?(containHeight/896):(containWidth/1536);
-     console.log(this.scale);
+      this.scale =
+        containHeight / 896 < containWidth / 1536
+          ? containHeight / 896
+          : containWidth / 1536;
     },
   },
   beforeDestroy() {
     clearInterval(this.times);
     clearInterval(this.datas);
+    clearInterval(this.setTime);
   },
 };
 </script>
@@ -233,6 +321,13 @@ export default {
   top: 50%;
   transition: 0.3s;
   transform: translate(-50%, -50%);
+  background-image: linear-gradient(
+    to right,
+    #090c19,
+    #101425,
+    #161a2f,
+    #090c19
+  );
   // transform:scale(0.5)  translate(-50%, -50%)!important;
 
   header {
@@ -297,7 +392,7 @@ export default {
   }
   section {
     .section-contain {
-      padding: 0 20px;
+      padding: 0 25px;
       overflow: hidden;
       position: relative;
       .left-border {
@@ -308,49 +403,50 @@ export default {
         position: absolute;
         left: 0;
         right: 0;
-        // bottom: 0;
-        top: 70px;
+        top: 60px;
         margin: auto;
-        // left: 50%;
-        // top: 50%;
-        // transform: translate(-50%,-50%);
         width: 1400px;
         height: 480px;
         // background: #f40;
         ul {
           display: flex;
           flex-wrap: wrap;
-          justify-content: center;
+          // justify-content: flex;
+
           li {
             margin: 10px 12px;
             box-sizing: border-box;
             list-style: none;
             width: 326px;
-            height: 95px;
+            height: 106px;
             background: url("../assets/img/card_bg.png");
-            background-size: cover;
+            // background-size: cover;
             display: flex;
             align-items: center;
             justify-content: center;
             .avator {
-              // display: flex;
               width: 70px;
               height: 70px;
-              // justify-content: center;
-              // img{
               position: relative;
               .real-actar {
+                transition: all 2s;
+                -webkit-transition: all 2s; /* Safari */
                 position: absolute;
+                border-radius: 50%;
                 width: 54px;
                 height: 54px;
+                overflow: hidden;
                 left: 0;
                 right: 0;
                 bottom: 0;
                 top: 0;
                 margin: auto;
+                background-position: center;
+                background-size: cover;
                 img {
                   border-radius: 50%;
                   width: 54px;
+                  height: 54px;
                   // height: 100%;
                 }
               }
@@ -358,13 +454,28 @@ export default {
               // }
             }
             .per-name {
+                transition: all 2s;
+                -webkit-transition: all 2s; /* Safari */
               padding: 0 10px 0 6px;
+              text-align: center;
+              height: 50px;
+              // line-height: 50px;
               .name {
-                font-size: 22px;
+                width: 80px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                font-size: 20px;
                 font-weight: 600;
                 padding-bottom: 7px;
               }
               .bumen {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                width: 80px;
                 font-size: 14px;
                 color: #b0abab;
               }
@@ -372,7 +483,6 @@ export default {
 
             .status {
               width: 104px;
-              // line-height: 56px;
               text-align: center;
               height: 56px;
               border: 1px dotted #b09a9a;
@@ -385,17 +495,24 @@ export default {
                 font-weight: 600;
               }
               .time-minutes {
-                margin-left: 2px;
+                margin-left: 3px;
                 // display: inline-block;
                 // padding: 2px 0 0 2px;
                 text-overflow: ellipsis;
                 overflow: hidden;
                 padding: 2px 0;
                 color: #ff9184;
-                font-size: 15px;
+                font-size: 14px;
               }
             }
           }
+        }
+        .now-page {
+          position: absolute;
+          width: 100%;
+          text-align: center;
+          bottom: -70px;
+          font-size: 26px;
         }
       }
       .right-border {
@@ -432,10 +549,10 @@ export default {
           margin: auto;
           display: flex;
           justify-content: space-around;
-          align-items: center;
+          align-items: flex-end;
           li {
             list-style: none;
-            text-align: center;
+            text-align: center;padding-bottom:6px;
             &.later {
               padding-left: 40px;
             }
@@ -449,12 +566,10 @@ export default {
             }
             .detail-num {
               text-align: left;
-              font-size: 38px;
+              font-size: 52px;
               font-weight: 650;
               color: #dbc548;
-              // padding-left: 20px;
               .num {
-                // margin-right: 10px;
               }
               .weight {
                 // padding-right: -25px;
