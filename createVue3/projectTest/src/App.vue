@@ -114,6 +114,8 @@ export default {
     };
   },
   created() {
+
+
     var that = this;
     window.onclick = function () {
       console.log("window  click");

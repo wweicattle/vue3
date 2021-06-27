@@ -8,28 +8,67 @@
 </head>
 
 <body>
+  <!-- <script>
+  console.log(div);
+  div.style.color="red";
+</script> -->
   <div id="div">
-     sasasa
+    sasasa
   </div>
+
   <script>
-    let objs=[1,2,3,4,5,6]
+    let objs = [1, 2, 3, 4, 5, 6]
     var obj = new Proxy(objs, {
       get: function (target, propKey, receiver) {
         console.log(`getting ${propKey}!`);
         return Reflect.get(target, propKey, receiver);
       },
       set: function (target, propKey, value, receiver) {
-        target[propKey]=value;
+        target[propKey] = value;
         // console.log(`setting ${propKey}!`);
         // return Reflect.set(target, propKey, value, receiver);
         return true
       }
     });
-  console.log(obj);
-  obj.push(666);
-  console.log(obj);
-  div.innerText=obj.toString()
+    console.log(obj);
+    obj.push(666);
+    console.log(obj);
+    div.innerText = obj.toString()
+  </script>
+  <script>
+    setTimeout(() => { div.style.color = "#f40"; console.log(div.style.color); })
+    console.log(222);
+    console.log(div.style.color);
+    var f = function sd() {
+      eval("var s=34")
+      console.log(s);
+      return eval(42 + 32);
+    }
+    var ff = f();
+    //  console.log(ff);
+    var obj = {
+      "name": "wuwei",
+      "age": 24,
+      "class": "graduate",
+      ad:undefined,
+      sf:null,
+      sdds(){},
+      ad:[{"name":"wukai","age":11111111111}]
+    }
+
+    var f = JSON.stringify(obj, (key, val) => {
+      switch (key) {
+        case "name":
+          return val + "wuwei";
+        case "age":
+          return 24 + "wuwei"
+        default:
+          return val
+      }
+    })
+    console.log(f);
   </script>
 </body>
+
 
 </html>
