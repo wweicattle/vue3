@@ -1,6 +1,5 @@
 <template>
   <div>
-    globalApi
     <MyComponent></MyComponent>
   </div>
 </template>

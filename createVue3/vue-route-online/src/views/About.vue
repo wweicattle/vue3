@@ -1,6 +1,10 @@
 <template>
   <div class="about">
     about page ------------
+    <button type="" @click="changeBtn">
+      changeBtn
+      {{ arr }}
+    </button>
     <li v-for="(val, index) in routes" :key="index">
       {{ val }}
       <router-link :to="val.path">{{ val.name }}</router-link>
@@ -14,21 +18,16 @@
 <script>
 import store from "../store";
 import router from "../router";
+import test from "wwcattleitem";
 const menu1 = () => import(/* webpackChunkName: "about" */ "./menu1.vue");
 const menu2 = () => import(/* webpackChunkName: "about" */ "./menu2.vue");
 const menu3 = () => import(/* webpackChunkName: "about" */ "./menu3.vue");
 const menu4 = () => import(/* webpackChunkName: "about" */ "./menu4.vue");
-// fetch("../utils/data.json")
-//   .then((da) => {
-//     return da.json();
-//   })
-//   .then((da) => {
-//     console.log(da);
-//   });
 export default {
   data() {
     return {
       routes: [],
+      arr: [4, 34, 35, 45],
     };
   },
   methods: {
@@ -37,10 +36,22 @@ export default {
       // console.log(this);
       // this.$router.push("/menu1");
     },
+    changeBtn() {
+      this.arr.push(4343434);
+    },
+  },
+  created() {
+    // dosomething...
+  },
+  watch: {
+    arr() {
+      console.log("arr change");
+    },
   },
   mounted() {
-    let r;
-    console.log(router);
+    console.log(test);
+    console.log(test.add());
+    test.reduce();
     this.$nextTick(() => {
       console.log(2222222222);
       console.log(store.getters.newRoutes);
