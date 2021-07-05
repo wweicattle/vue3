@@ -9,7 +9,7 @@
     </el-scrollbar>
   </div>
 </template>
-<script lang="ts">
+<script lang="ts" >
 import { defineComponent, ref, onMounted } from "vue"
 interface student {
   name: string,

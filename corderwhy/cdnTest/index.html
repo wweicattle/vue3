@@ -10,16 +10,27 @@
   <body>
     <div id="app"></div>
     <template id="apps">
+        {{arr}}
+        {{styleobj}}{{styleobj.as}}
       <div :style="{color:red}">style lorem</div>
       <div :style="[styleobj,styles]">style lorem</div>
       <div style="color: red; fontsize: 30px; cursor: pointer">{{message}}</div>
-      <button @click="btn">btns</button>
+      <div v-bind="styleobj">dsdsd</div>
+      <div :name="name">asasasas</div>
+
+      <div @click="btn($event,323)">
+        div1
+        <input @keyup.enter="clickbtn">input2</input>
+      </div>
+      <!-- <div v-on="{click:clickbtn,mousemove:btn}">btns</button> -->
     </template>
     <script>
       let app = {
         template: `#apps`,
         data() {
           return {
+              arr:[32,43434,4343],
+            name: "wewe",
             red: "red",
             name: "Wuwei",
             message: "wuweinilorem",
@@ -30,8 +41,17 @@
           };
         },
         methods: {
-          btn() {
+          clickbtn() {
+            console.log(222);
+          },
+          btn(a, b) {
+            console.log(a);
+            console.log(b);
             this.message = "wukai";
+            console.log(222222);
+            this.styleobj.as=222;
+            this.styleobj["color"]="ad"
+            this.arr[10]=100;
           },
         },
       };

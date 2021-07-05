@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/3.1.2/vue.global.js"></script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <template id="apps">
+        i am father！~~
+        <component-a></component-a>
+    </template>
+    <template id="appss">
+        <div>i am compoenntA</div>
+      </template>
+    <script>
+      let componentA = {
+        template: "#appss",
+      };
+      let app = {
+        template: `#apps`,
+        data() {
+          return {};
+        },
+        methods: {},
+        components: {
+          componentA,
+        },
+      };
+      Vue.createApp(app).mount("#app");
+    </script>
+  </body>
+</html>
