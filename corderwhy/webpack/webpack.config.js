@@ -1,8 +1,13 @@
 //
 let path = require("path");
-console.log(path.resolve(__filename));
+
+const CopyPlugin = require("copy-webpack-plugin");
+let htmlwebpackplugin = require("html-webpack-plugin");
+const {
+  copyFile
+} = require("fs");
 module.exports = {
-  entry: "/src/index.js",
+  entry: ['babel-polyfill', "/src/index.js"],
   output: {
     path: path.resolve(__dirname, "buddle"),
     filename: "buddles.js",
@@ -28,9 +33,32 @@ module.exports = {
         test: /\.tsx/,
         use: 'ts-loader',
         exclude: /node_modules/,
+      },
+      {
+        test: /\.(png|jpg|jpeg)$/,
+        type: "asset",
+        generator: {
+          filename: 'static/[hash:6][ext][query]'
+        }
       }
     ],
 
 
-  }
+  },
+  plugins: [
+    new htmlwebpackplugin({
+      template: "./public/index.html"
+    }),
+    new CopyPlugin({
+      patterns: [{
+        from: "public",
+        to: "./",
+        globOptions: {
+          dot: true,
+          gitignore: true,
+          ignore: ["**/index.html*"],
+        },
+      }, ],
+    })
+  ]
 };

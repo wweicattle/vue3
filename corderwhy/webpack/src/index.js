@@ -1,19 +1,14 @@
-import asf from "./index.mjs"
-// import a from "../test/test"
-// import "./createELement"
-// import "./index.less"
-// import "./index.scss"
-// import "./index.tsx"
-// const wuwe="Wuwei"
-
-const a = 100;
-
-function s() {
-  const ss = () => {
-    return 32
-  }
-  const sa = ss();
-  return  sa;
-}
-console.log("zhixinleg"+s())
-console.log(asf);
+// import asf from "./index.mjs"
+import a from "../test/test.js"
+import "./createELement"
+import "./index.less"
+import "./index.scss"
+import "./index.tsx"
+import sd from "./dd.png"
+let fs=require("./dd.png")
+console.log(fs);
+console.log(sd);
+let f = Object.assign({}, {
+  sa: 323
+})
+console.log(f);

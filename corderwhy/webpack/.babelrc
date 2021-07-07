@@ -1,0 +1,7 @@
+{
+  "presets": ["es2015"],
+  "plugins": [
+    //如果我们在代码中使用Object.assign方法，就用如下插件
+    "transform-object-assign"
+  ]
+}
