@@ -1,16 +1,21 @@
 //
 let path = require("path");
-
+let webpack = require("webpack")
 const CopyPlugin = require("copy-webpack-plugin");
 let htmlwebpackplugin = require("html-webpack-plugin");
+//引用插件
 const {
-  copyFile
-} = require("fs");
+  CleanWebpackPlugin
+} = require("clean-webpack-plugin");
+
+const {VueLoaderPlugin}= require("vue-loader");
 module.exports = {
   entry: ['babel-polyfill', "/src/index.js"],
   output: {
     path: path.resolve(__dirname, "buddle"),
-    filename: "buddles.js",
+    // filename: "js/[name]build[hash:10].js",
+    filename: "js/[name].js",
+
   },
   module: {
     rules: [{
@@ -40,12 +45,31 @@ module.exports = {
         generator: {
           filename: 'static/[hash:6][ext][query]'
         }
-      }
+      },
+      {
+        test: /\.js$/,
+        use: ['babel-loader'],
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.vue$/,
+        use: ['vue-loader'],
+        exclude: /node_modules/,
+      },
+
     ],
 
 
   },
+  cache: {
+    type: 'memory'
+  },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: '"production"'
+      }
+    }),
     new htmlwebpackplugin({
       template: "./public/index.html"
     }),
@@ -59,6 +83,14 @@ module.exports = {
           ignore: ["**/index.html*"],
         },
       }, ],
-    })
-  ]
+    }),
+    new CleanWebpackPlugin(),
+    new VueLoaderPlugin()
+  ],
+  optimization: {
+    splitChunks: {
+      chunks: 'all'
+    }
+  }
 };
+console.log(process.env.NDOE_ENV);
