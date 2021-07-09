@@ -1,5 +1,4 @@
 import {
-    
   createApp
 } from "vue";
 import as from "./../src/index.vue"

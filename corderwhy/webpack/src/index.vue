@@ -18,7 +18,7 @@ export default {
         Test
     },
     created() {
-
+        console.log("212");
     },
     mounted() {
 

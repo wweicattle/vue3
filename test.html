@@ -9,16 +9,37 @@
 </head>
 
 <body>
-  <script>
-    var f = new Promise(val => {
-      val(212)
-      console.log(val);
-    })
-    f.then(da => {
-      console.log(da);
-    })
+  <div v-scope>
+    <p>{{ count }}</p>
+    <p>{{ plusOne }}</p>
+    <button @click="increment">increment</button>
+  </div>
+  <script src="https://unpkg.com/petite-vue" defer></script>
+  <!-- anywhere on the page -->
+  <!-- <div v-scope="{ count: 0 }" id="apps">
+    {{ count }}
+    <button @click="count++">inc</button>
+  </div> -->
+  <script type="module">
+    import {
+      createApp
+    } from 'https://unpkg.com/petite-vue?module'
+    createApp({
+      // exposed to all expressions
+      count: 10,
+      // getters
+      get plusOne() {
+        return this.count + 1
+      },
+      // methods
+      increment() {
+        this.count++
+      }
+    }).mount()
 
   </script>
+
+
 </body>
 
 </html>

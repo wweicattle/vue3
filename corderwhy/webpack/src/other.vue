@@ -1,6 +1,6 @@
 <template>
     <div @click="btn">
-        我是的二个组件
+        我是的二ee4个组件
     </div>
 </template>
 

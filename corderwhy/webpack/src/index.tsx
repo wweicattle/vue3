@@ -4,7 +4,7 @@ interface ds {
 }
 const as: ds = {
   name: 323,
-  as: "sas"
+  as: "saeweweewewes"
 }
 console.log(as);
 
