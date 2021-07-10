@@ -24,8 +24,8 @@ module.exports = {
   //   }
   // },
   entry: ['babel-polyfill', "/src/index.js"],
-  target:"web",
-  mode:"development",
+  target: "web",
+  mode: "development",
   devtool: "source-map",
   output: {
     path: path.resolve(__dirname, "buddle"),
@@ -102,14 +102,23 @@ module.exports = {
   },
   devServer: {
     hot: true,
-    // contentBase: "./public",
     compress: true,
     port: 9000,
     compress: true,
-    proxy:{
-      "/api":"https://api.apiopen.top/videoCategoryDetails",
-      pathRewrite:{
-        "/api":""
+    proxy: {
+      "/wuwei": {
+        target: "http://127.0.0.1:4444/name",
+        changeOrigin: true,
+        pathRewrite: {
+          "^/wuwei": ""
+        },
+      },
+      "/ss": {
+        target: "https://api.apiopen.top/videoCategoryDetails",
+        // changeOrigin: true,
+        pathRewrite: {
+          "^/ss": ""
+        },
       }
     }
   },

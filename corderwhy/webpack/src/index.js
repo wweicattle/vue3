@@ -20,7 +20,7 @@ console.log(434);
 import "./index.less"
 import "./index.scss"
 import "./index.tsx"
-import sd from "./dd.png"
+import sd from "./logos.png"
 import  "./axios.js"
 // console.log(sd);
 
