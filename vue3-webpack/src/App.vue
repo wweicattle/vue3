@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Home class="sas" style="color:red"/>
     <component :is="currentTabComponent"></component>
     <router-link to="/">home</router-link>
     <router-link to="/about">about</router-link>
@@ -10,7 +11,7 @@
     <Ref />
   </div>
 </template>
-
+v-base  
 <script lang="ts">
 import HelloWorld from "./components/HelloWorld.vue";
 import About from "./views/About.vue";
@@ -21,7 +22,8 @@ export default {
   components: {
     HelloWorld,
     About,
-    Ref
+    Ref,
+    Home
   },
   data() {
     return {
@@ -30,7 +32,6 @@ export default {
     };
   },
   mounted() {
-    console.log("-------3333------");
     setTimeout(() => {
       console.log(22);
     }, 3000);
@@ -40,7 +41,14 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+h1 {
+  color: red;
+  opacity:  v-bind(opacitys);
+}
+.home{
+  font-size: 50px;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

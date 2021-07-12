@@ -1,5 +1,6 @@
 <template>
-  <div class="home">
+  <div class="home" :style="{fontSize:'66px'}" >
+    wuwei Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eos hic tempore laudantium error sed eaque, soluta voluptates libero ab cum sint nesciunt blanditiis beatae suscipit veritatis quia, delectus deleniti quas?
     <div ref="successbutton">
       <div>---------{{ fdf }}</div>
       <div>name vlaues- {{ as }}</div>
@@ -116,9 +117,12 @@ export default defineComponent({
   ,expose: [ 'opacitys' ]
 })
 </script>
-<style >
+<style scoped>
 h1 {
   color: rgb(65, 184, 131);
   opacity:  v-bind(opacitys);
+}
+.home{
+  font-size: 30px;
 }
 </style>
